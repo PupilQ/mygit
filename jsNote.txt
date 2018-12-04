@@ -834,3 +834,24 @@ window.innerWidth/Heigth IE9+
 
 		3.IE
 		ele.attachEvent('on' + 事件类型,处理函数)
+
+使用原生JS addEventListener，给每一个li元素绑定一个click事件,输出他们的顺序
+
+<ul>
+	<li>a</li>
+	<li>a</li>
+	<li>a</li>
+	<li>a</li>
+</ul>
+
+	var liCol = document.getElementsByTagName('li'),
+		len = liCol.length;
+	for(var i = 0; i < len; i++) {
+		(function(i){
+			liCol[i].addEventListener('click',function(){
+				console.log(i)
+			},false);
+		}(i))
+	}
+
+事件处理函数运行环境
