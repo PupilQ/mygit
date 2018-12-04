@@ -1,0 +1,836 @@
+浏览器组成
+	shell部分
+	内核部分
+		渲染引擎（语法规则和渲染）
+		Js引擎
+		其他模块
+
+主流浏览器及其内核
+	IE				trident
+	Chrome			webkit/blink
+	Firefox			Gecko
+	Opera			presto
+	Safari			webkit
+
+JS引入
+	1.页面级JS
+	2.外部JS文件 常用
+
+
+
+JS语法
+	变量声明 var
+
+	基本语法
+		原始值 不可改变值
+			Number
+			Boolean
+			String
+			undefined
+			null
+		stack 栈 栈内存赋值-拷贝副本
+
+		引用值
+			array
+			Object
+			function
+			...
+			date
+			RegExp
+		heap  堆 栈里面放地址-指向内容
+
+
+语句基本规则
+	"=+/-..."两边需要空格
+	语句以分号结束";"
+	js语法错误会引发后续代码终止，但不会影响其他js代码块
+		1.低级错误（语法解析错误）
+		2.逻辑错误（标准错误）
+
+
+运算符
+	"+"
+	数学运算
+	字符串链接 任何数据类型加字符串都等于字符串
+
+交换两个数字
+	var a = 123;
+	var b = 234;
+	a = a + b;
+	b = a - b;
+	a = a - b;
+
+
+NaN == NaN false
+
+逻辑运算符 && || ！
+
+	&& 
+	先看第一个表达式转换为布尔值的结果，如果为真，那么会看第二个表达式转化为布尔值的结果，然后如果只有两个表达式的话，只要看到第二个表达式，就可以返回该表达式的值了；
+	如果第一个表达式为false（undefined，null，NaN，"",0,false），返回第一个表达式的值；
+		短路语句
+			data && 执行语句...用到data
+
+	||
+	找到真就返回；
+
+	！
+	转换成布尔值取反
+
+条件语句
+	if
+	if else
+	switch case
+
+
+循环
+	for（var i = 0；i < 10;i++）{}
+	while()
+	do{}while()
+
+var n = parseInt(window.prompt('input'));
+
+
+
+数组 ---->基于对象，所以操作上基本不太会报错
+	var arr = [];          //字面量
+	var arr = new Array(); //只传第一个参数表示长度
+
+	常用方法（ES3.0）
+		改变原数组
+			push
+				Array.prototype.push = function(){
+					for(var i = 0; i < arguments.length;i++){
+						this[this.length] = argument[i];
+					}
+					return this.length;
+				}
+			pop
+			shift
+			unshift
+			sort 原有的sort方法不适用
+				重写sort
+					//必须写两个形参
+					//看返回值
+						1）当返回值为负数时，那么前面的放在前面
+						2）当返回值为正数时，那么后面的放在前面
+						3）为零时，不动
+				arr.sort(function(a,b){
+					//return a-b; 升序
+					//return b-a; 降序
+				});
+
+			reverse
+			splice(从第几位开始,截取多少长度,在切口处添加新数据)
+
+		不改变原数组
+			concat
+			join("") 按什么连接
+				连接多个字符串
+				//散列 效率相对较高
+			split("") 按什么拆分
+			toString
+			slice(从该位开始，截取到该位)
+			slice(从该位开始截取之后的内容)
+			不加参数即为空截  --->类数组转换
+
+	类数组
+		//属性要为索引属性
+		//必须有length属性
+		//最好加上push
+		//加上splice
+
+	数组去重
+		Array.prototype.unique = function(){
+			var temp = {},
+				arr = [],
+				len = this.length;
+			for(var i = 0;i < len;i++){
+				if(!temp[this[i]]){
+					temp[this[i]] = "zz";
+					arr.push(this[i]);
+				}
+			}
+			return arr;
+		}
+
+
+
+对象
+
+typeof
+	number string boolean object undefined function
+
+	封装type
+		function type(target){
+			var ret = typeof(target);
+			var template = {
+				"[object Array]" : "array Object",
+				"[object Object]" : "object Object",
+				"[object Number]" : "number Object",
+				"[object Boolean]" : "boolean Object",
+				"[object String]" : "string Object"
+			}
+			if(target === null){
+				return "null";
+			}else if(ret == "object"){
+				var str = Object.prototype.toString.call(target);
+				return template[str];
+			}else{
+				return ret;
+			}
+		}
+
+
+	1.显式类型转换
+		Number()
+		parseInt(x,radix) radix取值范围 2-36 / 0
+		parseFloat()
+		toString()  undefined/null不能用
+		String()
+		Boolean()
+	2.隐式类型转换 调用显式类型转换方法
+		isNaN（）
+		++ -- 正+ 负- 
+		加+
+		-*/%
+		&& || ！
+		< > <= >=
+		== !=
+
+		undefined == null 特殊
+		NaN不等于NaN
+
+		不发生类型转换
+		=== ！==
+
+	变量不声明直接使用不报错——————> typeof(x)
+
+
+函数                           高内聚 弱耦合
+	定义
+		函数声明
+			function 函数名（）{}
+				函数名规范 --小驼峰
+		函数表达式
+			var name = function 函数名（）{}
+			忽略函数名 即
+			var name = function () {}
+	组成形式
+		函数名称
+		参数
+			形参 
+				函数名.length---->形参数
+			实参
+				不定参 参数放到实参列表arguments
+				实参列表arguments发生变化，对应的形参也发生变化，但两个不是同一个东西，
+
+		返回值 return
+			1.终止函数
+			2.返回值
+
+
+test：
+	1.
+	function reverse(){
+		var num = window.prompt('input');
+	 	for(var i = num.length - 1; i >=0;i--){
+	 		str += transfer(num[i]);
+	 	}
+	}
+	function transfer(target){
+		switch(target){
+			case "1":
+				return "壹"；
+			case "2":
+				return "贰"；
+			...
+		}
+	}
+
+	2.输入一串低于10位的数字，输出这串数字的中文大写
+	eg: input:10000
+		output:壹万
+	eg: input:1001010
+		output:壹佰万壹仟零壹拾
+
+
+作用域
+	变量（变量作用域又称上下文）和函数生效（能被访问）的区域
+
+	[[scope]]:每个JavaScript函数都是一个对象，对象中有些属性我们可以访问，有些不行，这些属性仅供JavaScript引擎存取，[[scope]]为其中一个。它指的就是通常所说的作用域，其中存储了运行期上下文的集合。
+
+	作用域链：[[scope]]中所存储的执行期上下文对象集合，该集合呈链式连接，即作用域链。
+
+	执行期上下文：函数执行前一刻，会创建一个执行期上下文的内部对象，一个执行期上下文定义了一个函数执行时的环境，函数每次执行时对应的执行期上下文都是独一无二的，多次调用一个函数会导致创建多个执行期上下文，函数执行完毕，其产生的执行期上下文被销毁。
+
+	查找变量：从作用域链的顶端依次向下查找。
+
+
+JS运行
+	语法分析 
+		通篇扫描但不执行
+	预编译
+		函数声明整体提升
+		变量 声明提升
+
+		1.imply global 暗示全局变量：即任何变量，如果变量未经声明就赋值，此变量就为全局对象（window-->全局的域）所有。
+		2.一切声明的全局变量，全是window的属性。
+
+		预编译（函数执行前一刻）四步：
+			1.创建Activation Object对象
+			2.找到形参和变量声明，将变量和形参名作为AO的属性名，值为undefined
+			3.将实参值和形参统一
+			4.在函数体里面找函数声明，值赋予函数体
+
+		全局的预编译
+			生成Global Object对象 ----> window
+
+	解释执行
+
+
+
+！！！闭包
+	内部函数被保存到外部产生闭包；
+	闭包会导致作用域链不释放，造成内存泄漏（占用越多，能使用的就越少）。
+
+	1.实现公有变量
+		函数累加器
+			function count(){
+				var res = 0;
+				function add() {
+					res++;
+					console.log(res);
+				}
+				return add;
+			}
+			var counter = count();
+
+
+	2.做缓存（存储结构）
+		function eater(){
+			var food = "";
+			var obj = {
+				eat:function(){
+					console.log("I am eating" + food);
+					food = "";
+				},
+				push:function(myFood){
+					food = myFood;
+				}
+			}
+			return obj;
+		}
+
+		var eater1 = eater();
+
+
+	3.实现封装，属性私有化
+
+	4.模块化开发，防止污染全局变量
+
+
+立即执行函数----> 针对初始化功能的函数
+	(function (){
+		...
+	}()); ---> W3C建议使用
+	(function (){
+		...
+	})();
+
+	只有表达式才能被执行符号执行，能被执行符号执行的表达式，执行会忽略掉名字。
+
+
+function test(){
+	var arr = [];
+	for(var i = 0;i<10;i++){
+		arr[i] = function(){
+			console.log(i);    
+		}
+	}
+	return arr;
+}
+var myArr = test();
+for(var j = 0;j < 10;j++){
+	myArr[j]();	           //执行输出10个10 --闭包导致
+}
+
+
+解决：立即执行函数
+	(function(j) {
+		arr[j] = function(){
+			console.log(j)
+		}
+	}(i));
+
+
+function reByteslen(target){
+	var count = 0;
+	for(var i = 0;i < target.length;i++){
+		if(target.charCodeAt(i) <= 255){
+			count++;
+		}else if(target.charCodeAt(i) > 255){
+			count += 2;
+		}
+	}
+	return count;
+}
+
+优化：
+
+function reByteslen(target){
+	var count,
+		len;
+	count = len = target.length;
+	for(var i = 0;i < len;i++){
+		if(target.charCodeAt(i) > 255){
+			count++;
+		}
+	}
+	return count;
+}
+
+
+
+对象
+	增删改查
+		删 delete Xxx.xx
+
+	对象的创建方法
+		1.var obj = {}    plainObject  对象字面量/对象直接量
+		2.构造函数
+			1）系统自带的构造函数 Object()
+				var obj = new Object();
+			2) 自定义
+				function XxxxXxx(a,b,c){
+					//var this = {
+						...
+					}；
+					...
+					//return this;
+				}
+
+				var obj = new XxxxXxx();
+		构造函数内部原理
+			1.在函数体的最前面隐式的加上this = {}；
+			2.执行this.xxx = xxx;
+			3.隐式的返回this；
+
+	包装类   (原始值不能有方法、属性)
+		var num = 111;
+		num.len = 4;
+		//new Number(111).len = 4   delete
+
+		//new Number(111).len
+		console.log(num.len); //undefined
+
+		例：
+		var str = "abc";
+		str += 1;
+		var test = typeof(str);
+		if(test.length == 6) {
+			test.sign = "typeof的返回结果可能为String"；
+		}
+		console.log(test.sign);  //undefined
+
+
+
+!!!原型、原型链、call/apply
+
+	原型
+		定义：function对象的一个属性，它定义了构造函数制造出的对象的公共祖先。通过该构造函数产生的对象，可以继承该原型的属性和方法，原型也是对象。
+		.prototyp	-->原型
+
+		提取公有属性
+
+		查看对象的构造函数 constructor 
+
+	原型链
+		绝大多数原型链顶端 Object.prototype
+
+		Object.create(原型) --->Object.create(null) --> 没有原型
+
+
+	小BUG js精度不准 toFixed()
+
+
+	call/apply
+		改变this指向/apply第二位只能传一个数组参数-->arguments 
+
+		function Person (name,age,sex) {
+			this.name = name;
+			this.age = age;
+			this.sex = sex;
+		}
+
+		function Student(name,age,sex,tel,grade) {
+			//var this = {...}
+			Person.call(this,name,age,sex);
+			this.tel = tel;
+			this.grade = grade;
+		}
+
+		var student = new Student('sunny',23,'male',12819873198,2018);
+
+
+继承
+	传统形式--->原型链
+		过多的继承了没用的属性
+	借用构造函数
+		不能继承借用构造函数的原型
+		每次构造函数都要多走一个函数
+	共享原型
+		不能随便改动自己的原型
+		封装
+			function inherit(Target,Origin){
+				Target.prototype = Origin.prototype;
+			}
+	圣杯模式
+		封装
+			function inherit(Target,Origin){
+				function F() {};
+				F.prototype = Origin.prototype;
+				Target.prototype = new F();
+				Target.prototype.constuctor = Target;
+				Target.prototype.uber = Origin.prototype;
+			}
+
+		var inherit = (function(){
+			var F = function(){};  //私有化变量，闭包的应用
+			return function (Target,Origin){
+				F.prototype = Origin.prototype;
+				Target.prototype = new F();
+				Target.prototype.constuctor = Target;
+				Target.prototype.uber = Origin.prototype;
+			};
+		}());
+
+
+命名空间
+	管理变量，防止污染全局，适用于模块化开发
+		老办法 //命名空间
+		var org = {
+			department1 : {
+				p1 : {
+
+				},
+				p2 : {
+
+				},
+			}
+			department2 : {
+				...
+			}
+		}
+
+		闭包
+			var init = (function(){
+				var name = 'aaa';
+				function callName(){
+					...
+				}
+				return function(){
+					callName();
+				}
+			}());
+
+			//模拟jQuery链式调用
+			//	return this
+
+			//访问对象属性
+			//	obj.xxx --->obj['xxx']	
+
+对象的枚举
+	//for in
+	var obj = {
+		xxx : "ssss"
+		...
+	}
+
+	for(var prop in obj) {
+		//console.log(obj.prop); ---->undefined;
+		console.log(obj[prop]);
+	}
+
+
+	hasOwnProperty / in   作用差不多，区别在于in 不论是不是自己的，只要有就是true。
+
+	A instanceof B  //A对象是不是B构造函数构造的
+		实际是看A对象的原型链上有没有B的原型
+
+	区分一个变量是数组还是对象
+		1. arr.constructor --->function Array(){...}
+		   obj.constructor --->function Object(){...}
+
+		2. arr instanceof Array ---> true
+		   obj instanceof Array ---> false
+
+		3. Object.prototype.toString.call([]) ---> "[object Array]"
+		   Object.prototype.toString.call({}) ---> "[object Object]"
+
+克隆
+	浅克隆
+		function clone(origin,target){
+			var target = target || {};
+			for(var prop in origin){
+				target[prop] = origin[prop];
+			}
+			return target;
+		}
+	深层克隆
+		function deepClone(origin,target){
+			var target = target || {},
+				toStr = Object.prototype.toString,
+				arrStr = "[object Array]";
+			for(var prop in origin){
+				if(origin.hasOwnProperty(prop)){
+					if(arigin[prop] !== "null" && type(origin[prop]) == "object"){
+						//if(toStr.call(oringin[prop]) == arrStr){
+						//	target[prop] = [];
+						//}else{
+						//	target[prop] = {};
+						//}
+						target[prop] = (toStr.call(oringin[prop]) == arrStr) ? [] : {};
+						deepClone(origin[prop],target[prop]);
+					}else{
+						target[prop] = origin[prop];
+					}
+				}
+			}
+			return target;
+		}
+
+this
+	1.函数预编译过程 this--->window
+
+	2.全局作用域里   this--->window
+
+	3.call/apply  可以改变函数运行时this指向
+
+	4.obj.function();  function()里面的this指向obj
+
+
+	题：
+		var name = "222";
+		var a = {
+			name : "111",
+			say : function(){
+				console.log(this.name);
+			}
+		}
+		var fun = a.say;
+		fun();                           //222
+		a.say();                         //111
+		var b = {
+			name : "333",
+			say : function(fun){
+				fun();
+			}
+		}
+		b.say(a.say);                    //222
+		b.say = a.say;
+		b.say();						 //333
+
+
+arguments.callee --->函数引用
+	立即执行函数里面要用到函数引用的时候
+//function.caller
+
+
+
+
+try...catch
+	//try里面发生错误，不会执行错误后的try里面的代码
+	try{
+
+	}catch(e){    //error.message error.name ---> error
+		//输出错误信息
+	}
+
+//Error.name六种值对应的信息
+	1.EvalError：eval()的使用与定义不一致
+	2.RangeError：数值越界
+	3.ReferenceError：非法或不能识别的引用数值
+	4.SyntaxError：发生语法解析错误
+	5.TypeError：操作数类型错误
+	6.URIError：URI处理函数使用不当
+
+
+ES5严格模式   "use strict" 逻辑的最顶端
+	//es3.0 和 es5.0产生冲突的部分
+
+	不支持	with-->改变作用域链 影响效率
+			arguments.collee
+			func.caller
+			变量赋值之前必须声明
+			局部this必须被赋值（Person.call（null/undefined）赋值什么就是什么）
+			拒绝重复属性（不报错）和参数
+
+
+eval() 不允许使用
+
+
+
+
+
+DOM --->Document Object Model
+	DOM定义了表示和修改文档所需的方法，DOM对象即为宿主对象，由浏览器厂商定义，用来操作HTML和XML功能的一类对象的集合。
+
+	对节点的增删改查
+		document --->代表整个文档
+		.getElementById('') IE8以下浏览器，不区分id大小写，而且也返回匹配name属性的元素		.getElementsByTagName('')  //常用
+		.getElementsByName()  只有部分标签name可以生效（表单，img,iframe）
+		.getElementsByClassName() IE8和IE8以下的版本没有
+
+		.querySelector() css选择器 
+		.querySelectorAll()
+		选取的元素不是实时的 用法上受限
+
+	
+	节点类型
+			元素节点 --- 1
+			属性节点 --- 2
+			文本节点 --- 3
+			注释节点 --- 8
+			document --- 9
+			DocumentFragment  --- 11
+	遍历节点树
+		parentNode
+		childNodes
+		firstChild/lastChild
+		nextSibling/previousSibling
+
+	基于元素节点树的遍历
+		parentElement 返回当前元素的父元素节点 --IE不兼容
+		children	 只返回当前元素的元素子节点
+		node.childElementCout === node.children.length 当前元素节点的子节点长度
+		firstElementChild 返回第一个元素节点--IE不兼容
+
+		节点属性
+			nodeName  只读
+			nodeValue  文本和注释节点有 可读写
+			nodeType   只读
+			attributes  Element节点的属性集合
+
+			hasChildNodes()
+
+		返回所有直接子元素节点--no children
+		function retElementChild(node){
+			var temp = {
+				length : 0,
+				push : Array.prototype.push,
+				splice : Array.prototype.splice
+				},
+				child = node.childNodes,
+				len = node.childNodes.lenth;
+			for(var i = 0;i < len;i++){
+				if(child[i].nodeType === 1){
+					temp.push(child[i]);
+
+				}
+			}
+			return temp;
+		}
+
+
+DOM结构树
+
+									Node
+		Document 		CharacterData 		Element 		Attr
+	XML/HTMLDocument 	Text/Comment 		HTMLElement
+
+									HTMLHead/Body/Title...Element
+
+
+
+
+1.返回元素e的第n层祖先元素节点
+	function retParent(elem,n) {
+		while(elem && n){
+			elem = elem.parentElement;
+			n--;
+		}
+		return elem;
+	}
+
+
+
+封装insertAfter()
+	Element.prototype.insertAfter = function (targetNode,afterNode) {
+		var beforeNode = afterNode.nextElementSibling;
+		if(beforeNode == null) {
+			this.appendChild(targetNode);
+		}else{
+			this.insertBefore(targetNode,beforeNode);
+		}
+	}
+
+
+
+日期对象Date()
+
+
+setInterval  定时循环
+setTimeout   定时延迟执行
+
+
+浏览器渲染模式
+	标准模式
+	怪异/混杂模式   向后兼容
+
+window.pageX/YOffset  IE9+
+document.body.documentElement/scrollLeft/Top  IE8及以下(互斥)
+	function getScrollOffset(){
+		if(window.pageXOffset){
+			return {
+				x:window.pageXOffset,
+				y:window.pageYOffset
+			}
+		}else{
+			return {
+				x:document.body.scrollLeft + document.documentElement.scrollLeft,
+				y:document.body.scrollTop + document.documentElement.scrollTop
+			}
+		}
+	}
+	
+
+window.innerWidth/Heigth IE9+
+...
+
+查看元素的几何尺寸  ----静态结果
+//    .getBoundingClientRect()
+.offsetWidth/Heigth
+查看位置  
+.offsetLeft/Top   ---对于无定位父级的元素，返回相对文档的坐标，对于有定位父级的元素，返回相对于最近有定位的父级的坐标。
+.offsetParent  ---返回最近有定位的父级，如果没有，返回body，
+
+
+.scroll(x,y)
+.scrollTo(x,y)
+.scrollBy(x,y)  累加
+
+
+脚本化CSS
+	.style.prop   --遇到float之类的保留字属性，加上css
+					复合属性拆解。组合单词变为小驼峰式
+
+
+	查询计算样式 window.getComputedStyle(ele,null)  --null 获取伪元素
+				ele.currentStyle   ----IE
+
+
+事件
+	绑定事件
+		1.//句柄
+		ele.onXXX = function(event){
+			...
+		}
+
+		2.
+		ele.addEventListener('...',function(){
+			...
+		},false)
+
+		3.IE
+		ele.attachEvent('on' + 事件类型,处理函数)
