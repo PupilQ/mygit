@@ -6,7 +6,7 @@
 		其他模块
 
 主流浏览器及其内核
-	IE				trident
+	IE			trident
 	Chrome			webkit/blink
 	Firefox			Gecko
 	Opera			presto
