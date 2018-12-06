@@ -815,18 +815,31 @@ window.innerWidth/Heigth IE9+
 
 事件
 	绑定事件
-		1.//句柄
+		1.//句柄       this指向dom元素本身
 		ele.onXXX = function(event){
 			...
 		}
 
-		2.
+		2.			   this指向dom元素本身
 		ele.addEventListener('...',function(){
 			...
 		},false)
 
-		3.IE
+		3.IE 		    this指向window
 		ele.attachEvent('on' + 事件类型,处理函数)
+
+		兼容性方法addEvent
+			function addEvent(elem,type,handle) {
+				if(elem.addEventListener) {
+					elem.addEventListener(type,handle,false);
+				}else if(elem.attachEvent) {
+					elem.attachEvent('on' + type,function() {
+						handle.call(elem);
+					})
+				}else{
+					elem['on' + type] = handle;
+				}
+			}
 
 使用原生JS addEventListener，给每一个li元素绑定一个click事件,输出他们的顺序
 
@@ -847,4 +860,46 @@ window.innerWidth/Heigth IE9+
 		}(i))
 	}
 
-事件处理函数运行环境
+事件处理模型 
+	事件冒泡：
+		结构上（非视觉）嵌套关系的元素，会存在事件冒泡功能，即同一事件，自子元素冒泡向父元素（自底向上）。
+	事件捕获： ---IE没有
+		结构上（非视觉）嵌套关系的元素，会存在事件捕获功能，即同一事件，自父元素捕获向子元素（事件源元素/自顶向下）。
+
+	触发顺序：先捕获，后冒泡  （不同时存在）
+	focus，blur,change,submit,reset,select等事件不冒泡。
+
+	取消冒泡
+		W3C标准：event.stopPropagation();
+		IE:event.cancelBubble = ture;
+
+		function stopBubble(event) {
+			if(event.stopPropagation) {
+				event.stopPropagation();
+			}else{
+				event.cancelBubble = ture;
+			}
+		}
+
+	阻止默认事件(表单提交,a标签跳转,右键菜单...)
+		1.return false; 以对象属性的方式注册的事件才生效
+		2.event.preventDefault();W3C,IE9+
+		3.event.returnValue = false;
+
+		function cancelHandler(event) {
+			if(event.preventDefault) {
+				event.preventDefault();
+			}else{
+				event.returnValue = false;
+			}
+		}
+
+	事件对象  event || window.event
+		源对象：
+		event.target FireFox
+		event.srcElement IE
+
+	事件委托 -- 利用事件冒泡和事件源对象进行处理
+		性能好、灵活
+
+
