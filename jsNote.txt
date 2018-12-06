@@ -901,5 +901,3 @@ window.innerWidth/Heigth IE9+
 
 	事件委托 -- 利用事件冒泡和事件源对象进行处理
 		性能好、灵活
-
-
