@@ -901,3 +901,10 @@ window.innerWidth/Heigth IE9+
 
 	事件委托 -- 利用事件冒泡和事件源对象进行处理
 		性能好、灵活
+
+	事件分类
+		鼠标、键盘、文本、窗体操作
+		DOM3标准规定：click只能监听左键，只能mousedown/mouseup判断鼠标键
+		keydown（任意键盘按键!fn）/keypress(字符类按键)
+
+
